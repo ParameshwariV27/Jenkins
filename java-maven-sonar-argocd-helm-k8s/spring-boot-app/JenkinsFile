@@ -58,7 +58,7 @@ stage('Update Deployment File') {
         GIT_USER_NAME = "ParameshwariV27"
     }
 
-   steps {
+steps {
     withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
         sh '''
             cd "$WORKSPACE"
@@ -70,7 +70,7 @@ stage('Update Deployment File') {
             git config user.email "parameshwariV27@gmail.com"
             git config user.name "ParameshwariV27"
 
-            sed -i -E "s|(image: .*/springboot-app:).*|\\1${BUILD_NUMBER}|" \
+            sed -i -E "s|(image: pbv27/ultimate-cicd:).*|\\1${BUILD_NUMBER}|" \
             java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
 
             echo "Updated deployment:"
