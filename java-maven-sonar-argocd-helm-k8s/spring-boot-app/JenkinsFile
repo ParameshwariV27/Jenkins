@@ -70,7 +70,7 @@ stage('Update Deployment File') {
             git config user.email "parameshwaribv27@gmail.com"
             git config user.name "ParameshwariV27"
 
-            sed -i -E 's|(image: .*/springboot-app:).*|\\1'${BUILD_NUMBER}'|' \
+            sed -i -E "s|(image: .*/springboot-app:).*|\\1${BUILD_NUMBER}|" \
             java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
 
             git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
@@ -81,6 +81,6 @@ stage('Update Deployment File') {
         '''
     }
 }
-}
   }
+}
 }
