@@ -63,6 +63,8 @@ stage('Update Deployment File') {
             sh '''
                 cd "$WORKSPACE"
 
+                git config --global --add safe.directory "$WORKSPACE"
+
                 git status
 
                 git config user.email "parameshwaribv27@gmail.com"
