@@ -19,7 +19,7 @@ pipeline {
         sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
       }
     }
-    stage('Static Code Analysis') {
+   stage('Static Code Analysis') {
     environment {
         SONAR_URL = "http://3.110.51.246:9000"
     }
@@ -29,8 +29,8 @@ pipeline {
             sh '''
                 cd java-maven-sonar-argocd-helm-k8s/spring-boot-app
                 mvn sonar:sonar \
-                    -Dsonar.token=$SONAR_AUTH_TOKEN \
-                    -Dsonar.host.url=$SONAR_URL
+                  -Dsonar.token=$SONAR_AUTH_TOKEN \
+                  -Dsonar.host.url=$SONAR_URL
             '''
         }
     }
