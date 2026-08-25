@@ -42,6 +42,19 @@ pipeline {
         }
     }
 }
+
+stage('OWASP FS SCAN') {
+    steps {
+        dependencyCheck(
+            additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit',
+            odcInstallation: 'DP-Check'
+        )
+
+        dependencyCheckPublisher(
+            pattern: '**/dependency-check-report.xml'
+        )
+    }
+}
     stage('Build and Push Docker Image') {
       environment {
         DOCKER_IMAGE = "pbv27/ultimate-cicd:${BUILD_NUMBER}"
