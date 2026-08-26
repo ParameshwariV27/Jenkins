@@ -3,7 +3,7 @@ pipeline {
     docker {
        image 'pbv27/my-maven-docker-agent:v2'
       //image 'abhishekf5/maven-abhishek-docker-agent:v1'
-      args '--user root -v /var/run/docker.sock:/var/run/docker.sock  -v /var/lib/jenkins/tools:/var/lib/jenkins/tools' // mount Docker socket to access the host's Docker daemon
+      args '--user root -v /var/run/docker.sock:/var/run/docker.sock  -v /var/lib/jenkins/tools:/var/lib/jenkins/tools  -v /var/lib/jenkins/dependency-check-data:/usr/share/dependency-check/data' // mount Docker socket to access the host's Docker daemon
     }
   }
 
@@ -49,7 +49,7 @@ stage('OWASP FS SCAN') {
             string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')
         ]) {
             dependencyCheck(
-                additionalArguments: "--scan ./ --nvdApiKey ${NVD_API_KEY} --disableYarnAudit --disableNodeAudit",
+                additionalArguments: "--scan ./ --nvdApiKey ${NVD_API_KEY} --data /usr/share/dependency-check/data --disableYarnAudit --disableNodeAudit",
                 odcInstallation: 'DP-Check'
             )
         }
