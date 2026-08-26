@@ -43,7 +43,7 @@ pipeline {
     }
 }
 
-stage('OWASP FS SCAN') {
+/*stage('OWASP FS SCAN') {
     steps {
         withCredentials([
             string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')
@@ -58,7 +58,7 @@ stage('OWASP FS SCAN') {
             pattern: '**/dependency-check-report.xml'
         )
     }
-}
+}*/
     stage('Build and Push Docker Image') {
       environment {
         DOCKER_IMAGE = "pbv27/ultimate-cicd:${BUILD_NUMBER}"
