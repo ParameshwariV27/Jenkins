@@ -2,17 +2,11 @@ pipeline {
   agent {
     docker {
        image 'pbv27/my-maven-docker-agent:v2'
-      //image 'abhishekf5/maven-abhishek-docker-agent:v1'
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock  -v /var/lib/jenkins/tools:/var/lib/jenkins/tools  -v /var/lib/jenkins/dependency-check-data:/usr/share/dependency-check/data' // mount Docker socket to access the host's Docker daemon
     }
   }
 
   stages {
-//stage('Clean Workspace') {
-   // steps {
-   //     deleteDir()
-   // }
-//}
     stage('Checkout') {
       steps {
         sh 'echo passed'
@@ -43,7 +37,24 @@ pipeline {
     }
 }
 
-///////---------add---------
+///////---------add OWASP---------
+stage('OWASP FS SCAN') {
+    steps {
+        withCredentials([
+            string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')
+        ]) {
+            dependencyCheck(
+                additionalArguments: "--scan ./ --nvdApiKey ${NVD_API_KEY} --data /usr/share/dependency-check/data --disableYarnAudit --disableNodeAudit",
+                odcInstallation: 'DP-Check'
+            )
+        }
+
+        dependencyCheckPublisher(
+            pattern: '**/dependency-check-report.xml'
+        )
+    }
+}
+
 stage('Build Docker Image') {
     environment {
         DOCKER_IMAGE = "pbv27/ultimate-cicd:${BUILD_NUMBER}"
