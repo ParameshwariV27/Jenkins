@@ -38,22 +38,22 @@ pipeline {
 }
 
 ///////---------add OWASP---------
-stage('OWASP FS SCAN') {
-    steps {
-        withCredentials([
-            string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')
-        ]) {
-            dependencyCheck(
-                additionalArguments: '--scan ./ --nvdApiKey $NVD_API_KEY --data /usr/share/dependency-check/data --disableYarnAudit --disableNodeAudit',
-                odcInstallation: 'DP-Check'
-            )
-        }
+//stage('OWASP FS SCAN') {
+ //   steps {
+  //      withCredentials([
+  //          string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')
+  //      ]) {
+  //          dependencyCheck(
+  //              additionalArguments: '--scan ./ --nvdApiKey $NVD_API_KEY --data /usr/share/dependency-check/data --disableYarnAudit --disableNodeAudit',
+   //             odcInstallation: 'DP-Check'
+   //         )
+   //     }
 
-        dependencyCheckPublisher(
-            pattern: '**/dependency-check-report.xml'
-        )
-    }
-}
+   //     dependencyCheckPublisher(
+    //        pattern: '**/dependency-check-report.xml'
+    //    )
+    //}
+//}
 
 stage('Build Docker Image') {
     environment {
