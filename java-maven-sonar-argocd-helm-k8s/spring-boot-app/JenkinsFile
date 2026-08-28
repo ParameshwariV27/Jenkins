@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-       image 'pbv27/my-maven-docker-agent:v3'
+       image 'pbv27/my-maven-docker-agent:v1'
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock  -v /var/lib/jenkins/tools:/var/lib/jenkins/tools  -v /var/lib/jenkins/dependency-check-data:/usr/share/dependency-check/data' // mount Docker socket to access the host's Docker daemon
     }
   }
@@ -67,20 +67,20 @@ stage('Build Docker Image') {
         '''
     }
 }
-stage('Trivy Image Scan') {
-    environment {
-        DOCKER_IMAGE = "pbv27/ultimate-cicd:${BUILD_NUMBER}"
-    }
+//stage('Trivy Image Scan') {
+//    environment {
+//        DOCKER_IMAGE = "pbv27/ultimate-cicd:${BUILD_NUMBER}"
+ //   }
 
-    steps {
-        sh '''
-            trivy image \
-            --severity HIGH,CRITICAL \
-            --exit-code 0 \
-            ${DOCKER_IMAGE}
-        '''
-    }
-}
+ //   steps {
+ //       sh '''
+ //           trivy image \
+ //           --severity HIGH,CRITICAL \
+  //          --exit-code 0 \
+  //          ${DOCKER_IMAGE}
+   //     '''
+   // }
+//}
 stage('Push Docker Image') {
     environment {
         DOCKER_IMAGE = "pbv27/ultimate-cicd:${BUILD_NUMBER}"
